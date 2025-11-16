@@ -1,7 +1,8 @@
 {
 	"dependencies": {
 		"@matter/main": "0.15.6",
-		"axios": "^1.12.2",
+		"axios": "^1.13.2",
+		"dotenv": "^17.2.3",
 		"node-fetch": "^3.3.2"
 	},
 	"devDependencies": {
