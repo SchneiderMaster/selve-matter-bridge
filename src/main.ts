@@ -1,51 +1,26 @@
 import { MaybePromise, ServerNode } from "@matter/main";
-import { WindowCoveringBehavior } from "@matter/main/behaviors";
-import { WindowCovering } from "@matter/main/clusters";
-import { WindowCoveringDevice } from "@matter/main/devices";
-import { moveDown } from "./commeo-api-provider/move-down.js";
-import { moveTo } from "./commeo-api-provider/move-to.js";
-import { stop } from "./commeo-api-provider/stop.js";
-import { moveUp } from "./commeo-api-provider/move-up.js";
+import { GenericSwitchDevice, GenericSwitchRequirements } from "@matter/main/devices";
 
-class John extends WindowCoveringBehavior.with(
-	WindowCovering.Feature.Lift,
-	WindowCovering.Feature.PositionAwareLift
-) {
-	override async downOrClose() {
-		console.log(
-			"we are closing",
-			this.state.currentPositionLiftPercent100ths
-		);
-		moveDown("0B");
-	}
+class def extends GenericSwitchRequirements.SwitchServer {
+	override initialize(_options?: {}): MaybePromise {
+		this.state.numberOfPositions = 2;
+		this.state.currentPosition = 1;
+		}
 
-	override goToLiftPercentage(
-		request: WindowCovering.GoToLiftPercentageRequest
-	): MaybePromise {
-		this.state.currentPositionLiftPercent100ths =
-			request.liftPercent100thsValue;
-		moveTo("0B", Math.floor(request.liftPercent100thsValue / 100));
-	}
-
-	override stopMotion() {
-		stop("0B");
-	}
-
-	override async upOrOpen() {
-		console.log(
-			"we are opening",
-			this.state.currentPositionLiftPercent100ths
-		);
-		moveUp("0B");
-	}
-
-	override initialize() {}
 }
 
-const testingShutter = WindowCoveringDevice.with(John);
+const abc = GenericSwitchDevice.with(def);
 
 const node = await ServerNode.create();
 
-await node.add(testingShutter);
+const ghi = await node.add(abc);
+
+function onOff(state: number) {
+	state = state === 0 ? 1 : 0;
+	ghi.setStateOf(def, {currentPosition: state})
+	setTimeout(() => onOff(state), 5000)
+}
+
+onOff(0);
 
 await node.run();
