@@ -39,7 +39,9 @@ class John extends WindowCoveringBehavior.with(
 		moveUp("0B");
 	}
 
-	override initialize() {}
+	override initialize() {
+		this.state.currentPositionLiftPercent100ths = 0;
+	}
 }
 
 const testingShutter = WindowCoveringDevice.with(John);
