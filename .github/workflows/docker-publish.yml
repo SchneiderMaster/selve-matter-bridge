@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_HUB_REPO: SchneiderMaster/selve-matter-bridge
+  DOCKER_HUB_REPO: schneidermaster/selve-matter-bridge
 
 jobs:
   build_and_push:
