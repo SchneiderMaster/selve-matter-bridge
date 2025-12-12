@@ -37,4 +37,4 @@ jobs:
           tags: |
             ${{ env.DOCKER_HUB_REPO }}:${{ github.sha }}
             ${{ env.DOCKER_HUB_REPO }}:latest
-          platforms: linux/amd64,linux/arm/v7
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
