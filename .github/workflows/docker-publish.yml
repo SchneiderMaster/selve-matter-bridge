@@ -35,8 +35,6 @@ jobs:
           push: true
           context: .
           tags: |
-            # Tag mit der Kurz-Commit-ID (nützlich für spezifische Versionen)
             ${{ env.DOCKER_HUB_REPO }}:${{ github.sha }}
-            # Tag mit 'latest' (für die aktuelle stabile Version)
             ${{ env.DOCKER_HUB_REPO }}:latest
           platforms: linux/amd64,linux/arm/v7
