@@ -27,8 +27,8 @@ export class CommeoShutter {
     }
 
     public updateName = async () => {
-        return this.getConfig().then((res) => {
-
+        return this.getConfig().then(async (result) => {
+        const res = await result;
         if(!res.info.configurable.name) {
             throw new Error("Name of device not found");
         }
