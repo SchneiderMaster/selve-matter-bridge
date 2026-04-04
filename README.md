@@ -1,11 +1,57 @@
-# Selve to Matter Bridge (**WIP**)
+# Selve to Matter Bridge
 
-Translates Selve Home Server 2 Shutters to the Matter standard.
+Translates Selve Home Server 2 Shutters to the [Matter](https://project-chip/connectedhomeip) standard.
 
-## How to run
+This requires **NO** USB-RF gateway from Selve and only a compatible Matter Hub. One free option is the [Python Matter Server](https://github.com/matter-js/python-matter-server).
+
+Note that as of now, only Commeo shutters will work because of technical limitations on my end.
+
+## How to use
+
+Execute the following command to create the bridge and start it via docker:
+```bash
+docker run -d \
+    --name selve-matter-bridge \
+    --restart=unless-stopped \
+    --network=host \
+    --env SELVE_SERVER_IP="<your-selve-server-ip>" \
+    --env SELVE_SERVER_PASSWORD="<your-selve-server-password>" \
+    schneidermaster/selve-matter-bridge:latest
+```
+
+Alternatively, you can add the following service to your `docker-compose.yml`:
+```yml
+services:
+  selve-matter-bridge:
+    image: schneidermaster/selve-matter-bridge:latest
+    container_name: selve-matter-bridge
+    environment:
+      - SELVE_SERVER_IP: <your-selve-server-ip>
+      - SELVE_SERVER_PASSWORD: <your-selve-server-password>
+    network_mode: host
+    restart: unless-stopped
+```
+
+A QR-Code and a code for pairing can be retrieved with:
 
 ```bash
+docker logs selve-matter-bridge
+```
+
+## How to develop
+
+Developing for this tool requires `yarn` to be installed.
+
+Simply install all of the dependencies with:
+```bash
 yarn install
+```
+
+Credentials to your server can be entered in the `.env`.
+
+To start the bridge execute:
+
+```bash
 yarn app
 ```
 
