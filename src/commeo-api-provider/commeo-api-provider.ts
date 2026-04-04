@@ -30,7 +30,7 @@ export const sendRequest = async (
 	let response;
 	switch (method) {
 		case RequestMethod.GET:
-			response = await axios.get(path);
+			response = await axios.get(url);
 			if (response.status != 200) {
 				throw new Error(
 					"Error while sending request: " +
@@ -43,7 +43,7 @@ export const sendRequest = async (
 					"Error while sending request: " + response.data.XC_ERR.code
 				);
 			}
-			return response.data;
+			return response.data.XC_SUC;
 
 		case RequestMethod.POST:
 			response = await axios.post(url, body);

@@ -6,6 +6,8 @@ import { moveDown } from "./commeo-api-provider/move-down.js";
 import { moveTo } from "./commeo-api-provider/move-to.js";
 import { stop } from "./commeo-api-provider/stop.js";
 import { moveUp } from "./commeo-api-provider/move-up.js";
+import { initAllDevices } from "./commeo-api-provider/initAllDevices.js";
+import { CommeoShutter } from "./commeo-api-provider/CommeoShutter.js";
 
 class John extends WindowCoveringBehavior.with(
 	WindowCovering.Feature.Lift,
@@ -16,19 +18,22 @@ class John extends WindowCoveringBehavior.with(
 			"we are closing",
 			this.state.currentPositionLiftPercent100ths
 		);
-		moveDown("0B");
+		// moveDown("0B");
+
+		this.state.targetPositionLiftPercent100ths = 0;
 	}
 
 	override goToLiftPercentage(
 		request: WindowCovering.GoToLiftPercentageRequest
 	): MaybePromise {
-		this.state.currentPositionLiftPercent100ths =
-			request.liftPercent100thsValue;
-		moveTo("0B", Math.floor(request.liftPercent100thsValue / 100));
+		// moveTo("0B", Math.floor(request.liftPercent100thsValue / 100));
+
+		this.state.targetPositionLiftPercent100ths = request.liftPercent100thsValue;
 	}
 
 	override stopMotion() {
 		stop("0B");
+		this.state.targetPositionLiftPercent100ths = this.state.currentPositionLiftPercent100ths;
 	}
 
 	override async upOrOpen() {
@@ -44,10 +49,15 @@ class John extends WindowCoveringBehavior.with(
 	}
 }
 
-const testingShutter = WindowCoveringDevice.with(John);
+const commeoShutters: CommeoShutter[] = await initAllDevices();
 
-const node = await ServerNode.create();
 
-await node.add(testingShutter);
+console.log(commeoShutters.length);
 
-await node.run();
+// const testingShutter = WindowCoveringDevice.with(John);
+
+// const node = await ServerNode.create();
+
+// await node.add(testingShutter);
+
+// await node.run();
